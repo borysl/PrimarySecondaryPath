@@ -15,6 +15,10 @@ const DEFAULT_DB_SETTINGS = {
 
 const DB_SETTINGS_FILENAME = 'db.json';
 
+const SERVICE_DATA_SQL = `select service_id, s.name, input_asset_id, output_asset_id, a1.name as input_asset, a2.name as output_asset, vlan, input_port, output_port, ismeshed from ntw_service as s
+  inner join ntw_asset as a1 on a1.asset_id = s.input_asset_id
+  inner join ntw_asset as a2 on a2.asset_id = s.output_asset_id`;
+
 var pgp = require('pg-promise')(options);
 
 var cn = DEFAULT_DB_SETTINGS;
@@ -41,14 +45,10 @@ module.exports = {
   getServiceById: getServiceById,
   getAllServices: getAllServices,
   getServicesOnServiceLayer: getServicesOnServiceLayer
-  // getSinglePuppy: getSinglePuppy,
-  // createPuppy: createPuppy,
-  // updatePuppy: updatePuppy,
-  // removePuppy: removePuppy
 };
 
-function getAllServices(req, res, next) {
-  db.any('select * from ntw_service')
+function runQueryOnDb(queryString, res, next) {
+  db.any(queryString)
     .then(function (data) {
       res.status(200)
         .json(data);
@@ -58,27 +58,16 @@ function getAllServices(req, res, next) {
     });
 }
 
+function getAllServices(req, res, next) {
+  runQueryOnDb(`${SERVICE_DATA_SQL}`, res, next)
+}
+
 function getServicesOnServiceLayer(req, res, next) {
-  var service_id=req.params.service_id;
-  db.any(`select * from ntw_service where service_id=${service_id}`)
-    .then(function (data) {
-      res.status(200)
-        .json(data);
-    })
-    .catch(function (err) {
-      return next(err);
-    });
+  var service_layer_id=req.params.service_layer_id;
+  runQueryOnDb(`${SERVICE_DATA_SQL} where s.service_layer_id=${service_layer_id}`, res, next)
 }
 
 function getServiceById(req, res, next) {
   var service_id=req.params.id;
-
-  db.any(`select * from ntw_service where service_id=${service_id}`)
-    .then(function (data) {
-      res.status(200)
-        .json(data);
-    })
-    .catch(function (err) {
-      return next(err);
-    });
+  runQueryOnDb(`${SERVICE_DATA_SQL} where s.service_id=${service_id}`, res, next)
 }
