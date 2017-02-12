@@ -1,0 +1,25 @@
+{
+  "name": "primary-secondary-path",
+  "description": "Prototype for making selection of the services comprises services georgraphically",
+  "main": "public/index.html",
+  "authors": [
+    "borysl <borys.lebeda@gmail.com>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "selector"
+  ],
+  "homepage": "https://github.com/borysl/PrimarySecondaryPath",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootcomplete": "^0.0.8"
+  }
+}
