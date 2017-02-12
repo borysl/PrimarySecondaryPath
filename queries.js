@@ -40,6 +40,7 @@ var db = pgp(cn);
 module.exports = {
   getServiceById: getServiceById,
   getAllServices: getAllServices,
+  getServicesOnServiceLayer: getServicesOnServiceLayer
   // getSinglePuppy: getSinglePuppy,
   // createPuppy: createPuppy,
   // updatePuppy: updatePuppy,
@@ -50,29 +51,32 @@ function getAllServices(req, res, next) {
   db.any('select * from ntw_service')
     .then(function (data) {
       res.status(200)
-        .json({
-          status: 'success',
-          data: data,
-          message: 'Get all services'
-        });
+        .json(data);
     })
     .catch(function (err) {
       return next(err);
     });
 }
 
+function getServicesOnServiceLayer(req, res, next) {
+  var service_id=req.params.service_id;
+  db.any(`select * from ntw_service where service_id=${service_id}`)
+    .then(function (data) {
+      res.status(200)
+        .json(data);
+    })
+    .catch(function (err) {
+      return next(err);
+    });
+}
 
 function getServiceById(req, res, next) {
-  var service_id=req['id'];
+  var service_id=req.params.id;
 
   db.any(`select * from ntw_service where service_id=${service_id}`)
     .then(function (data) {
       res.status(200)
-        .json({
-          status: 'success',
-          data: data,
-          message: 'Get service by Id'
-        });
+        .json(data);
     })
     .catch(function (err) {
       return next(err);
