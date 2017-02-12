@@ -1,5 +1,46 @@
-extends layout
+<!DOCTYPE html>
+<html lang="en">
 
-block content
-  h1= title
-  p Welcome to #{title}
+<head>
+  <title>Selecting primary/secondary path</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+
+<div class="container">
+  <div class="jumbotron">
+    <h1>Selecting primary/secondary path</h1>
+    <p>Selecting primary and secondary path is cunning functionality of the application. This prototype helps to make it more
+      usable</p>
+  </div>
+  <form>
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary" autofocus="true">Static</button>
+      <button type="button" class="btn btn-primary">Meshed</button>
+    </div>
+    <div class="form-group">
+      <label for="name">Service Name:</label>
+      <input type="text" class="form-control" id="name">
+    </div>
+    <div class="form-group">
+      <label for="serviceLayer">Service Layer:</label>
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">SelectSL<span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="#">SDH Transmission</a></li>
+          <li><a href="#">Primary Multiplex</a></li>
+          <li><a href="#">PLC/IP</a></li>
+        </ul>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-primary">Reload</button>
+  </form>
+</div>
+
+
+</html>
