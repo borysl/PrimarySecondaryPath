@@ -8,7 +8,8 @@ router.get('/', function(req, res, next) {
 
 var db = require('../queries');
 
-router.get('/api/puppies', db.getAllPuppies);
+router.get('/api/services', db.getAllServices);
+router.get('/api/service/:id', db.getServiceById);
 // router.get('/api/puppies/:id', db.getSinglePuppy);
 // router.post('/api/puppies', db.createPuppy);
 // router.put('/api/puppies/:id', db.updatePuppy);

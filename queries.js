@@ -8,7 +8,7 @@ var options = {
 const DEFAULT_DB_SETTINGS = {
     host: 'localhost',
     port: 5435,
-    database: 'puppies',
+    database: 'network',
     user: 'postgres',
     password: 'putYouPassword'
 };
@@ -38,21 +38,40 @@ var db = pgp(cn);
 // add query functions
 
 module.exports = {
-  getAllPuppies: getAllPuppies,
+  getServiceById: getServiceById,
+  getAllServices: getAllServices,
   // getSinglePuppy: getSinglePuppy,
   // createPuppy: createPuppy,
   // updatePuppy: updatePuppy,
   // removePuppy: removePuppy
 };
 
-function getAllPuppies(req, res, next) {
-  db.any('select * from pups')
+function getAllServices(req, res, next) {
+  db.any('select * from ntw_service')
     .then(function (data) {
       res.status(200)
         .json({
           status: 'success',
           data: data,
-          message: 'Retrieved ALL puppies'
+          message: 'Get all services'
+        });
+    })
+    .catch(function (err) {
+      return next(err);
+    });
+}
+
+
+function getServiceById(req, res, next) {
+  var service_id=req['id'];
+
+  db.any(`select * from ntw_service where service_id=${service_id}`)
+    .then(function (data) {
+      res.status(200)
+        .json({
+          status: 'success',
+          data: data,
+          message: 'Get service by Id'
         });
     })
     .catch(function (err) {
