@@ -42,9 +42,17 @@ var db = pgp(cn);
 // add query functions
 
 module.exports = {
-  getServiceById: getServiceById,
-  getAllServices: getAllServices,
-  getServicesOnServiceLayer: getServicesOnServiceLayer
+  getServiceById: function getSeviceById(req, res, next) {
+    var service_id=req.params.id;
+    runQueryOnDb(`${SERVICE_DATA_SQL} where s.service_id=${service_id}`, res, next)
+  },
+  getAllServices: function (req, res, next) {
+    runQueryOnDb(`${SERVICE_DATA_SQL}`, res, next)
+  },
+  getServicesOnServiceLayer: function (req, res, next) {
+    var service_layer_id=req.params.service_layer_id;
+    runQueryOnDb(`${SERVICE_DATA_SQL} where s.service_layer_id=${service_layer_id}`, res, next)
+  }
 };
 
 function runQueryOnDb(queryString, res, next) {
@@ -56,18 +64,4 @@ function runQueryOnDb(queryString, res, next) {
     .catch(function (err) {
       return next(err);
     });
-}
-
-function getAllServices(req, res, next) {
-  runQueryOnDb(`${SERVICE_DATA_SQL}`, res, next)
-}
-
-function getServicesOnServiceLayer(req, res, next) {
-  var service_layer_id=req.params.service_layer_id;
-  runQueryOnDb(`${SERVICE_DATA_SQL} where s.service_layer_id=${service_layer_id}`, res, next)
-}
-
-function getServiceById(req, res, next) {
-  var service_id=req.params.id;
-  runQueryOnDb(`${SERVICE_DATA_SQL} where s.service_id=${service_id}`, res, next)
 }
