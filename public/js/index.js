@@ -1,3 +1,5 @@
+$("#btnLoad").click(function() { alert(`Selected serviceId=${txtServiceId.value}`);});
+
   $('.service-layer-selector').select2({
     placeholder: 'Select service layer for primary/secondary path',
     allowClear: true
