@@ -1,4 +1,20 @@
-$("#btnLoad").click(function() { alert(`Selected serviceId=${txtServiceId.value}`);});
+var selectedServiceObject;
+function putAlert(errorObj) {
+  $('#alert_placeholder').html('<div class="alert"><a class="close" data-dismiss="alert">×</a><span>'+errorObj+'</span></div>')
+}
+
+$("#btnLoad").click(function() { 
+  $.get({
+    url: `api/service/${txtServiceId.value}`,
+    success: function(data) {
+      selectedServiceObject = data;
+      $("#name").text(data.name);
+    },
+    error: function(err) {
+      putAlert(err)
+    }
+  })
+});
 
   $('.service-layer-selector').select2({
     placeholder: 'Select service layer for primary/secondary path',
@@ -6,12 +22,12 @@ $("#btnLoad").click(function() { alert(`Selected serviceId=${txtServiceId.value}
   });
     $('.primary-path').select2({
   ajax: {
-    url: "api/servicesOnServiceLayer/" + 1,
+    url: "api/servicesOnServiceLayer",
     dataType: 'json',
     delay: 250,
     data: function (params) {
       return {
-        _: params.term, // search term
+        service_layer_id: params.term, // search term
         page: params.page
       };
     },

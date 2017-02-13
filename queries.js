@@ -44,16 +44,30 @@ var db = pgp(cn);
 module.exports = {
   getServiceById: function getSeviceById(req, res, next) {
     var service_id=req.params.id;
-    runQueryOnDb(`${SERVICE_DATA_SQL} where s.service_id=${service_id}`, res, next)
+    runQueryOnDbSingle(`${SERVICE_DATA_SQL} where s.service_id=${service_id}`, res, next)
   },
   getAllServices: function (req, res, next) {
     runQueryOnDb(`${SERVICE_DATA_SQL}`, res, next)
   },
   getServicesOnServiceLayer: function (req, res, next) {
-    var service_layer_id=req.params.service_layer_id;
+    var service_layer_id=req.query.service_layer_id;
     runQueryOnDb(`${SERVICE_DATA_SQL} where s.service_layer_id=${service_layer_id}`, res, next)
   }
 };
+
+function runQueryOnDbSingle(queryString, res, next) {
+  db.any(queryString)
+    .then(function (data) {
+      if (data.length == 1) {
+        res.status(200).json(data[0]);
+      } else {
+        res.status(404).send('Object not found!')
+      }
+    })
+    .catch(function (err) {
+      return next(err);
+    });
+}
 
 function runQueryOnDb(queryString, res, next) {
   db.any(queryString)
